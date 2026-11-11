@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#071b2c">
+<title>Oar & Order — Olympic Regatta</title>
+<style>
+:root{color-scheme:dark;--ink:#f7f5eb;--muted:#9bb3c0;--gold:#ffd978;--mint:#73e0c0;--panel:rgba(9,31,48,.84)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;margin:0;overflow:hidden;background:#071b2c;color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;touch-action:manipulation;user-select:none}
+body{display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse at 50% 20%,#193a50 0,#091c2c 60%,#061522 100%)}
+#game{position:relative;width:min(100vw,1200px);height:min(100dvh,820px);min-height:540px;overflow:hidden;background:#0a2335;box-shadow:0 24px 80px #0008;isolation:isolate}
+#water{position:absolute;inset:0;width:100%;height:100%;display:block}
+.vignette{position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(2,15,27,.56),transparent 25%,transparent 67%,rgba(2,16,27,.54));z-index:1}
+.topbar{position:absolute;z-index:2;left:0;right:0;top:0;padding:clamp(12px,2.4vw,25px) clamp(15px,3.8vw,42px);display:flex;align-items:flex-start;justify-content:space-between;pointer-events:none}
+.brand{display:flex;align-items:center;gap:11px}.brandmark{width:37px;height:37px;border:1px solid #ffffff3b;border-radius:12px;display:grid;place-items:center;background:#ffffff12;font-size:20px;box-shadow:inset 0 0 18px #fff1}.brandname{font-size:12px;letter-spacing:.2em;font-weight:900}.brandname small{display:block;color:#a6c1cb;font-size:8px;letter-spacing:.23em;margin-top:3px;font-weight:700}
+.race-meta{display:flex;align-items:center;gap:9px}.meta-chip{min-width:76px;padding:8px 11px;background:#0618279c;border:1px solid #ffffff20;border-radius:11px;text-align:center;backdrop-filter:blur(8px)}.meta-chip span{display:block;color:#96b0bd;font-size:8px;letter-spacing:.16em;font-weight:800}.meta-chip b{display:block;font-variant-numeric:tabular-nums;font-size:17px;margin-top:2px}.position-chip{color:#ffe59c}
+.center-label{position:absolute;z-index:2;top:clamp(84px,12vh,115px);left:50%;transform:translateX(-50%);text-align:center;pointer-events:none;width:100%}.event-tag{display:inline-flex;align-items:center;gap:7px;border:1px solid #ffffff30;background:#071e2dc9;padding:6px 12px;border-radius:99px;color:#c5d6dc;font-size:9px;font-weight:850;letter-spacing:.18em}.event-tag i{width:6px;height:6px;border-radius:50%;background:#ffcf61;box-shadow:0 0 10px #ffcf61}.race-title{margin:8px 0 0;font-size:clamp(20px,4vw,30px);line-height:1;letter-spacing:.045em;font-weight:950;text-shadow:0 3px 20px #0007}.race-sub{margin-top:5px;font-size:10px;color:#b1c8d0;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.progress-wrap{position:absolute;z-index:2;top:clamp(150px,22vh,190px);left:50%;transform:translateX(-50%);width:min(390px,58vw);pointer-events:none}.progress-line{height:4px;background:#f5ffff35;border-radius:8px;position:relative}.progress-fill{height:100%;width:0;border-radius:8px;background:linear-gradient(90deg,#79e5c4,#ffdf81);box-shadow:0 0 12px #8ee8cd}.progress-dot{position:absolute;width:11px;height:11px;top:50%;left:0;transform:translate(-50%,-50%);border:2px solid #fff;background:#5fd7b3;border-radius:50%;box-shadow:0 0 0 3px #68e4c340}.progress-end{position:absolute;right:-4px;top:50%;transform:translate(100%,-50%);font-size:8px;color:#c9dbe0;font-weight:800;letter-spacing:.12em}
+.bottom-ui{position:absolute;z-index:3;left:0;right:0;bottom:0;padding:0 clamp(14px,4vw,44px) max(13px,env(safe-area-inset-bottom));display:flex;flex-direction:column;align-items:center;gap:12px;pointer-events:none}
+.balance-card{width:min(560px,100%);background:var(--panel);border:1px solid #ffffff27;border-radius:16px;padding:11px 16px 13px;backdrop-filter:blur(15px);box-shadow:0 12px 40px #0004;pointer-events:auto;touch-action:none}
+.balance-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}.balance-label{font-size:9px;letter-spacing:.17em;font-weight:900;color:#d9e8e8}.balance-value{font-size:9px;font-weight:900;letter-spacing:.12em;color:#9eb8c2}.balance-value.good{color:var(--mint)}
+.balance-track{height:24px;position:relative;touch-action:none;cursor:ew-resize}.track-bg{position:absolute;left:0;right:0;top:8px;height:8px;border-radius:8px;background:linear-gradient(90deg,#f38372 0%,#f8c677 26%,#69d9b8 43%,#8ce9c7 57%,#f8c677 74%,#f38372 100%);box-shadow:inset 0 1px 3px #0016}.safe-zone{position:absolute;top:5px;left:42%;width:16%;height:14px;border:1px solid #b1ffe263;border-radius:8px;background:#b8ffe41c}.target-mark{position:absolute;top:3px;height:19px;width:2px;background:#ffffffb0;box-shadow:0 0 7px white;transform:translateX(-50%)}.balance-knob{position:absolute;top:0;width:17px;height:17px;border-radius:50%;background:#fff;border:3px solid #56d5b2;box-shadow:0 0 0 4px #59e0be39,0 2px 6px #0008;transform:translateX(-50%);transition:box-shadow .15s}.balance-knob.off{border-color:#ff8a78;box-shadow:0 0 0 4px #ff8a7835}.track-captions{display:flex;justify-content:space-between;margin-top:1px;color:#7894a0;font-size:7px;font-weight:850;letter-spacing:.15em}
+.action-row{width:min(720px,100%);display:flex;justify-content:center;align-items:center;gap:12px;pointer-events:auto}.stroke-btn{height:66px;flex:1;max-width:250px;display:flex;align-items:center;justify-content:center;gap:12px;border:1px solid #ffffff25;border-radius:16px;background:linear-gradient(145deg,#13354aeb,#092337ed);color:#eaf3ef;box-shadow:0 8px 25px #0004;position:relative;overflow:hidden;touch-action:manipulation;cursor:pointer;transition:transform .1s,border-color .15s,background .15s}.stroke-btn:active{transform:scale(.97)}.stroke-btn.active{border-color:#ffdc81;background:linear-gradient(145deg,#55492e,#172f39);box-shadow:0 0 0 2px #ffdc812c,0 0 25px #f4c96931}.stroke-btn.ready .stroke-icon{background:#ffdd7c;color:#152839;transform:scale(1.09)}.stroke-btn .stroke-icon{width:36px;height:36px;border-radius:11px;background:#ffffff14;display:grid;place-items:center;font-size:18px;font-weight:900;transition:.18s}.btn-copy{text-align:left}.btn-copy strong{display:block;font-size:11px;letter-spacing:.13em}.btn-copy small{display:block;color:#92aab5;font-size:8px;margin-top:3px;font-weight:750;letter-spacing:.12em}.stroke-btn.active .btn-copy small{color:#ffdc81}.btn-key{position:absolute;right:11px;top:9px;border:1px solid #ffffff2c;color:#91aab3;border-radius:5px;padding:2px 5px;font:700 8px inherit}.stroke-meter{position:absolute;bottom:0;left:0;width:0;height:3px;background:#ffdc81;transition:width .1s linear}.coach{min-width:90px;text-align:center;color:#c5d6d7;font-size:8px;letter-spacing:.12em;font-weight:900;line-height:1.55}.coach b{display:block;color:#ffdd83;font-size:10px}.mobile-hint{display:none;color:#90aab4;font-size:8px;letter-spacing:.1em;margin-top:-3px}
+.overlay{position:absolute;z-index:5;inset:0;display:grid;place-items:center;padding:20px;background:linear-gradient(180deg,#0716245c,#071624b0);backdrop-filter:blur(5px);transition:opacity .25s}.overlay.hidden{opacity:0;pointer-events:none}.modal{width:min(440px,100%);padding:30px 28px 25px;border:1px solid #ffffff30;border-radius:24px;background:linear-gradient(145deg,#12344aef,#081d2ced);box-shadow:0 30px 90px #0009;text-align:center}.olympic-rings{display:flex;justify-content:center;gap:0;margin:0 auto 15px}.olympic-rings span{width:16px;height:16px;border:2px solid;border-radius:50%;margin-right:-2px}.olympic-rings span:nth-child(1){border-color:#53b6e4}.olympic-rings span:nth-child(2){border-color:#f0c64c}.olympic-rings span:nth-child(3){border-color:#e85c61}.olympic-rings span:nth-child(4){border-color:#52d6a0}.olympic-rings span:nth-child(5){border-color:#fff}.modal-kicker{font-size:9px;font-weight:900;letter-spacing:.23em;color:#a8c1cb}.modal h1{font-size:clamp(31px,8vw,46px);margin:7px 0 8px;line-height:.96;letter-spacing:-.04em}.modal h1 em{font-style:normal;color:#ffdc7f}.modal p{margin:12px auto 19px;max-width:325px;color:#b4c9d0;font-size:12px;line-height:1.65}.howto{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:17px 0 20px;text-align:left}.howto div{border:1px solid #ffffff18;background:#ffffff08;padding:10px 11px;border-radius:12px;font-size:9px;line-height:1.5;color:#a9c0c8}.howto b{display:block;color:#f3f5e9;font-size:9px;letter-spacing:.1em;margin-bottom:3px}.cta{width:100%;padding:14px 18px;border:0;border-radius:12px;color:#122b38;background:linear-gradient(90deg,#ffe28a,#92e7c7);font-size:11px;font-weight:950;letter-spacing:.16em;box-shadow:0 7px 25px #8edfc32c;cursor:pointer}.cta:active{transform:scale(.985)}.fineprint{font-size:8px!important;color:#75919d!important;margin:11px 0 0!important;letter-spacing:.06em}
+@media(max-width:600px){#game{height:100dvh;min-height:500px;box-shadow:none}.brandmark{width:31px;height:31px;font-size:17px}.brand{gap:8px}.brandname{font-size:10px}.brandname small{font-size:7px}.meta-chip{min-width:59px;padding:7px 8px;border-radius:9px}.meta-chip span{font-size:7px}.meta-chip b{font-size:14px}.race-meta{gap:6px}.center-label{top:100px}.progress-wrap{top:167px;width:52vw}.bottom-ui{gap:8px;padding-left:13px;padding-right:13px}.balance-card{padding:9px 13px 10px;border-radius:14px}.action-row{gap:7px}.stroke-btn{height:59px;gap:7px;border-radius:13px}.stroke-btn .stroke-icon{width:30px;height:30px;border-radius:9px;font-size:15px}.btn-copy strong{font-size:9px}.btn-copy small{font-size:7px;letter-spacing:.06em}.btn-key{display:none}.coach{min-width:65px;font-size:7px}.coach b{font-size:9px}.mobile-hint{display:block}.modal{padding:26px 21px 22px}.modal p{font-size:11px}.howto{gap:6px}.howto div{padding:8px;font-size:8px}}
+@media(max-height:670px){.bottom-ui{gap:7px}.stroke-btn{height:54px}.balance-card{padding-top:7px;padding-bottom:8px}.center-label{top:83px}.progress-wrap{top:145px}.race-title{font-size:21px}.race-sub{font-size:8px}.topbar{padding-top:12px}}
+</style>
+</head>
+<body>
+<main id="game" aria-label="Oar and Order rowing race game">
+<canvas id="water" aria-label="Rowing race across a lake"></canvas><div class="vignette"></div>
+<header class="topbar"><div class="brand"><div class="brandmark">⚓</div><div class="brandname">OAR & ORDER<small>OLYMPIC REGATTA</small></div></div><div class="race-meta"><div class="meta-chip"><span>TIME</span><b id="time">00:00</b></div><div class="meta-chip position-chip"><span>PLACE</span><b id="place">1<span style="font-size:10px">ST</span></b></div></div></header>
+<section class="center-label"><div class="event-tag"><i></i> WOMEN'S SINGLE SCULLS · FINAL</div><div class="race-title" id="sceneTitle">THE FINAL 500</div><div class="race-sub" id="sceneSub">KEEP YOUR LINE · FIND YOUR RHYTHM</div></section>
+<div class="progress-wrap"><div class="progress-line"><div class="progress-fill" id="progressFill"></div><div class="progress-dot" id="progressDot"></div><span class="progress-end">FINISH</span></div></div>
+<div class="bottom-ui">
+<div class="balance-card"><div class="balance-head"><span class="balance-label">BOAT BALANCE</span><span class="balance-value" id="balanceText">DRAG TO STEADY</span></div><div class="balance-track" id="balanceTrack"><div class="track-bg"></div><div class="safe-zone"></div><div class="target-mark" id="targetMark" style="left:50%"></div><div class="balance-knob" id="balanceKnob" style="left:50%"></div></div><div class="track-captions"><span>PORT</span><span>STEADY ZONE</span><span>STARBOARD</span></div></div>
+<div class="action-row"><button class="stroke-btn" id="leftBtn" aria-label="Stroke on left side"><span class="btn-key">A</span><span class="stroke-icon">↙</span><span class="btn-copy"><strong>PORT</strong><small>LEFT STROKE</small></span><i class="stroke-meter"></i></button><div class="coach" id="coach">ALTERNATE<br><b>FOR POWER</b></div><button class="stroke-btn" id="rightBtn" aria-label="Stroke on right side"><span class="btn-key">D</span><span class="stroke-icon">↘</span><span class="btn-copy"><strong>STARBOARD</strong><small>RIGHT STROKE</small></span><i class="stroke-meter"></i></button></div>
+<div class="mobile-hint">DRAG THE BALANCE BAR · TAP THE LIT OAR</div>
+</div>
+<section class="overlay" id="overlay"><div class="modal"><div class="olympic-rings"><span></span><span></span><span></span><span></span><span></span></div><div class="modal-kicker" id="modalKicker">LAKE LUCERNE · 500 METRES</div><h1 id="modalTitle">ROW YOUR<br><em>HEART OUT.</em></h1><p id="modalText">One lane. Five rivals. A place on the podium. Find your rhythm and race for gold.</p><div class="howto" id="howto"><div><b>01 · STEADY</b>Drag the balance bar to keep the boat in the green.</div><div><b>02 · SURGE</b>Tap the glowing oar when it flashes. Alternate sides!</div></div><button class="cta" id="startBtn">TAKE YOUR LANE &nbsp; →</button><p class="fineprint" id="fineprint">Touch, mouse or keyboard · A / D to row</p></div></section>
+</main>
+<script>
+(() => {
+'use strict';
+const canvas=document.getElementById('water'),ctx=canvas.getContext('2d');
+const game=document.getElementById('game');
+const $=id=>document.getElementById(id);
+const ui={time:$('time'),place:$('place'),fill:$('progressFill'),dot:$('progressDot'),target:$('targetMark'),knob:$('balanceKnob'),balanceText:$('balanceText'),track:$('balanceTrack'),left:$('leftBtn'),right:$('rightBtn'),coach:$('coach'),overlay:$('overlay'),start:$('startBtn'),modalKicker:$('modalKicker'),modalTitle:$('modalTitle'),modalText:$('modalText'),howto:$('howto'),fineprint:$('fineprint'),sceneTitle:$('sceneTitle'),sceneSub:$('sceneSub')};
+let W=0,H=0,dpr=1,last=0,elapsed=0,playing=false,finished=false,progress=0,playerX=.5,balance=.5,target=.5,targetTimer=0,steer=0,activeSide=0,nextSide=0,sideTime=0,strokeFlash=0,strokes=0,drive=0,combo=0,bestCombo=0,place=1,shake=0;
+const bots=[{name:'NED',flag:'🇳🇱',color:'#f5b64a',speed:.0138,p:.02,phase:.2},{name:'ITA',flag:'🇮🇹',color:'#53c895',speed:.0146,p:.08,phase:1.4},{name:'USA',flag:'🇺🇸',color:'#ef777c',speed:.0136,p:.01,phase:2.5},{name:'GER',flag:'🇩🇪',color:'#97b9e9',speed:.0142,p:.04,phase:3.2}];
+let particles=[];
+function resize(){const r=game.getBoundingClientRect();W=r.width;H=r.height;dpr=Math.min(devicePixelRatio||1,2);canvas.width=Math.round(W*dpr);canvas.height=Math.round(H*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);draw()}
+window.addEventListener('resize',resize,{passive:true});
+function clamp(v,a,b){return Math.max(a,Math.min(b,v))}
+function startRace(){elapsed=0;progress=0;balance=.5;target=.5;targetTimer=0;steer=0;activeSide=0;nextSide=Math.random()<.5?1:-1;sideTime=0;strokeFlash=0;strokes=0;drive=0;combo=0;bestCombo=0;finished=false;playing=true;last=performance.now();bots.forEach((b,i)=>{b.p=.015+i*.009;b.phase=i*1.7});ui.overlay.classList.add('hidden');ui.sceneTitle.textContent='THE FINAL 500';ui.sceneSub.textContent='KEEP YOUR LINE · FIND YOUR RHYTHM';requestAnimationFrame(loop)}
+function endRace(){playing=false;finished=true;const ordinal=place===1?'1ST':place===2?'2ND':place===3?'3RD':place+'TH';ui.modalKicker.textContent=place===1?'GOLD MEDAL · WHAT A RACE':'FINISH LINE · '+ordinal+' PLACE';ui.modalTitle.innerHTML=place===1?'YOU ROWED<br><em>TO GLORY.</em>':'RACE<br><em>COMPLETE.</em>';ui.modalText.textContent=place===1?'A flawless finish! Your rhythm carried you all the way to Olympic gold.':'You crossed the line in '+ordinal+' place. Every stroke counts—find your rhythm and take another shot at the podium.';ui.howto.style.display='none';ui.start.textContent='ROW AGAIN  →';ui.fineprint.textContent=strokes+' strokes · best rhythm x'+Math.max(1,bestCombo)+' · '+formatTime(elapsed);ui.overlay.classList.remove('hidden')}
+function formatTime(n){const sec=Math.floor(n),cs=Math.floor((n-sec)*100);return '00:'+String(sec).padStart(2,'0')+'.'+String(cs).padStart(2,'0')}
+function loop(now){if(!playing)return;const dt=Math.min(.04,(now-last)/1000);last=now;update(dt);draw();requestAnimationFrame(loop)}
+function update(dt){elapsed+=dt;targetTimer-=dt;sideTime+=dt;strokeFlash=Math.max(0,strokeFlash-dt);shake=Math.max(0,shake-dt*3);
+ if(targetTimer<=0){target=clamp(.5+(Math.random()-.5)*.24,-.0,1);targetTimer=1.5+Math.random()*1.1}
+ const off=balance-target;steer=clamp(off*4,-1,1);
+ // The boat naturally drifts; balance stays under player control.
+ const actualError=Math.abs(off);
+ const stable=actualError<.105?1:clamp(1-(actualError-.105)*3.2,0,.85);
+ drive=Math.max(0,drive-dt*.24);
+ progress+=dt*(.0088+stable*.0051+drive);
+ bots.forEach((b,i)=>{const wobble=Math.sin(elapsed*.67+b.phase)*.0004+Math.sin(elapsed*.22+i)*.00025;b.p+=dt*(b.speed+wobble)});
+ place=1+bots.filter(b=>b.p>progress).length;
+ ui.place.innerHTML=place+'<span style="font-size:10px">'+(place===1?'ST':place===2?'ND':place===3?'RD':'TH')+'</span>';
+ ui.time.textContent=formatTime(elapsed).slice(0,5);const pct=clamp(progress,0,1)*100;ui.fill.style.width=pct+'%';ui.dot.style.left=pct+'%';
+ ui.target.style.left=(target*100)+'%';ui.knob.style.left=(balance*100)+'%';ui.knob.classList.toggle('off',actualError>.15);
+ ui.balanceText.textContent=actualError<.09?'IN THE POCKET':actualError<.17?'STEADY…':'OFF BALANCE';ui.balanceText.classList.toggle('good',actualError<.12);
+ const cue=sideTime<.56;ui.left.classList.toggle('active',nextSide===-1);ui.right.classList.toggle('active',nextSide===1);ui.left.classList.toggle('ready',nextSide===-1&&cue);ui.right.classList.toggle('ready',nextSide===1&&cue);
+ ui.left.querySelector('.stroke-meter').style.width=nextSide===-1&&cue?(100-sideTime/.56*100)+'%':'0%';ui.right.querySelector('.stroke-meter').style.width=nextSide===1&&cue?(100-sideTime/.56*100)+'%':'0%';
+ ui.coach.innerHTML=cue?'YOUR TURN<b>'+ (nextSide===-1?'PORT':'STARBOARD')+'</b>':'READY<b>ALTERNATE</b>';
+ if(progress>=1)endRace();
+}
+function setBalanceFromX(clientX){const r=ui.track.getBoundingClientRect();balance=clamp((clientX-r.left)/r.width,.02,.98)}
+ui.track.addEventListener('pointerdown',e=>{ui.track.setPointerCapture(e.pointerId);setBalanceFromX(e.clientX);e.preventDefault()});ui.track.addEventListener('pointermove',e=>{if(e.buttons||e.pressure>0)setBalanceFromX(e.clientX)});
+function stroke(side){if(!playing)return;const timing=side===nextSide&&sideTime<.56;const timingOffset=sideTime;const alternating=side!==activeSide;
+ if(!alternating){shake=.3;combo=0;drive=Math.max(0,drive-.15);return}
+ activeSide=side;strokes++;sideTime=0;nextSide=-side;
+ if(timing){combo++;bestCombo=Math.max(combo,bestCombo);const quality=clamp(1-Math.abs(timingOffset-.2)*1.3,.55,1);drive=Math.min(.006,drive+.0021*quality);strokeFlash=.2;}
+ else{combo=0;drive=Math.min(.003,drive+.0008);}
+ // A stroke gently nudges the shell away from the oar side.
+ balance=clamp(balance+(side===-1?.026:-.026),.02,.98);
+}
+ui.left.addEventListener('pointerdown',e=>{e.preventDefault();stroke(-1)});ui.right.addEventListener('pointerdown',e=>{e.preventDefault();stroke(1)});
+window.addEventListener('keydown',e=>{if(e.repeat)return;if(e.key.toLowerCase()==='a'||e.key==='ArrowLeft')stroke(-1);if(e.key.toLowerCase()==='d'||e.key==='ArrowRight')stroke(1);if(e.key===' '&&!playing&&ui.overlay.classList.contains('hidden')===false)startRace()});
+ui.start.addEventListener('click',()=>{ui.howto.style.display='grid';ui.start.textContent='TAKE YOUR LANE   →';ui.fineprint.textContent='Touch, mouse or keyboard · A / D to row';startRace()});
+function rr(x,y,w,h,r){ctx.beginPath();ctx.roundRect(x,y,w,h,r)}
+function drawBackground(t){
+ const sky=ctx.createLinearGradient(0,0,0,H*.48);sky.addColorStop(0,'#274c61');sky.addColorStop(.58,'#7899a0');sky.addColorStop(1,'#c6c6a0');ctx.fillStyle=sky;ctx.fillRect(0,0,W,H*.48);
+ // soft morning sun and layered shoreline
+ const sun=ctx.createRadialGradient(W*.76,H*.19,2,W*.76,H*.19,H*.22);sun.addColorStop(0,'#f7e7b577');sun.addColorStop(1,'#f4d18a00');ctx.fillStyle=sun;ctx.fillRect(0,0,W,H*.48);
+ ctx.fillStyle='#496b6e';ctx.beginPath();ctx.moveTo(0,H*.31);for(let x=0;x<=W+20;x+=50)ctx.lineTo(x,H*(.27+Math.sin(x*.009+t*.12)*.018+Math.cos(x*.023)*.008));ctx.lineTo(W,H*.42);ctx.lineTo(0,H*.42);ctx.fill();
+ ctx.fillStyle='#778b75';ctx.fillRect(0,H*.32,W,H*.045);
+ // distant grandstand
+ ctx.fillStyle='#213b46';ctx.fillRect(0,H*.245,W,H*.07);ctx.fillStyle='#d5b879';ctx.fillRect(0,H*.305,W,H*.008);
+ for(let x=8;x<W;x+=20){ctx.fillStyle=['#df7e63','#e8d2a4','#7bb79e','#9a8db4'][Math.floor(x/20)%4];ctx.globalAlpha=.72;ctx.fillRect(x,H*.26+(Math.sin(x*.12)*2),3,H*.022);ctx.globalAlpha=1}
+ const water=ctx.createLinearGradient(0,H*.34,0,H);water.addColorStop(0,'#337b88');water.addColorStop(.4,'#1c6376');water.addColorStop(1,'#0c344b');ctx.fillStyle=water;ctx.fillRect(0,H*.34,W,H*.66);
+ // shimmering horizontal water strokes
+ for(let row=0;row<20;row++){const y=H*(.365+row*.033);ctx.globalAlpha=.07+(row%4)*.012;ctx.strokeStyle=row%2?'#b8e4d7':'#eff3d2';ctx.lineWidth=row%3===0?1.5:1;ctx.beginPath();for(let x=-30;x<W+30;x+=80){const xx=x+((t*28+row*37)%95);ctx.moveTo(xx,y+Math.sin(x*.02+t+row)*2);ctx.lineTo(xx+22+(row%5)*7,y+Math.sin(x*.02+t+row)*2)}ctx.stroke()}ctx.globalAlpha=1;
+ // lane ropes and buoys
+ for(let lane=0;lane<5;lane++){const y=H*(.405+lane*.084);ctx.globalAlpha=.24;ctx.strokeStyle='#d6e5d5';ctx.setLineDash([5,8]);ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();ctx.setLineDash([]);ctx.globalAlpha=.72;const shift=(t*80+lane*31)%48;for(let x=-50+shift;x<W+45;x+=48){ctx.fillStyle=lane===2?'#ffdd83':'#eaf0d7';ctx.beginPath();ctx.ellipse(x,y,3,2.1,0,0,Math.PI*2);ctx.fill()}ctx.globalAlpha=1}
+}
+function drawBoat(x,y,scale,color,phase,own=false){
+ ctx.save();ctx.translate(x,y);ctx.scale(scale,scale);
+ const wiggle=Math.sin(elapsed*8+phase)*1.5;
+ // wake
+ ctx.globalAlpha=.18;ctx.strokeStyle='#e4f2dc';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(-44,wiggle+7);ctx.lineTo(-86,wiggle+10);ctx.moveTo(-42,wiggle+11);ctx.lineTo(-66,wiggle+16);ctx.stroke();ctx.globalAlpha=1;
+ // shell
+ ctx.fillStyle='#071e2b';ctx.beginPath();ctx.moveTo(-48,wiggle+2);ctx.quadraticCurveTo(-3,wiggle+9,48,wiggle+1);ctx.lineTo(62,wiggle);ctx.lineTo(49,wiggle+6);ctx.quadraticCurveTo(0,wiggle+13,-49,wiggle+5);ctx.closePath();ctx.fill();
+ ctx.fillStyle=color;ctx.beginPath();ctx.moveTo(-40,wiggle+1);ctx.quadraticCurveTo(0,wiggle+5,46,wiggle+1);ctx.lineTo(54,wiggle);ctx.quadraticCurveTo(4,wiggle+8,-42,wiggle+3);ctx.fill();
+ // rower body and head
+ const rx=2+Math.sin(elapsed*7+phase)*2;ctx.strokeStyle='#f0d7bd';ctx.lineWidth=3.4;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(rx,wiggle-1);ctx.lineTo(rx-3,wiggle-10);ctx.stroke();ctx.fillStyle=own?'#f4d079':'#f0cbb0';ctx.beginPath();ctx.arc(rx-4,wiggle-14,4.2,0,Math.PI*2);ctx.fill();
+ ctx.strokeStyle=own?'#f9e3a1':'#d9d8c8';ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(rx-1,wiggle-5);ctx.lineTo(rx+14+Math.cos(elapsed*7+phase)*6,wiggle+3);ctx.stroke();
+ // oars, animated
+ const sweep=Math.sin(elapsed*7+phase)*13;ctx.lineWidth=1.5;ctx.strokeStyle='#e1d7bc';ctx.beginPath();ctx.moveTo(rx+2,wiggle-4);ctx.lineTo(rx+15+sweep,wiggle-13);ctx.moveTo(rx+2,wiggle-3);ctx.lineTo(rx+13-sweep,wiggle+13);ctx.stroke();ctx.fillStyle=color;ctx.beginPath();ctx.ellipse(rx+17+sweep,wiggle-14,5,2,-.25,0,Math.PI*2);ctx.ellipse(rx+15-sweep,wiggle+14,5,2,.25,0,Math.PI*2);ctx.fill();
+ if(own){ctx.fillStyle='#fff4c2';ctx.font='800 8px system-ui';ctx.textAlign='center';ctx.fillText('YOU',3,wiggle-22)}
+ ctx.restore();
+}
+function draw(t=performance.now()/1000){if(!W||!H)return;ctx.clearRect(0,0,W,H);drawBackground(t);
+ const lanes=[...bots.map((b,i)=>({p:b.p,color:b.color,phase:b.phase,own:false,lane:i})),{p:progress,color:'#e6f4ee',phase:4.7,own:true,lane:2}].sort((a,b)=>a.lane-b.lane);
+ const scale=clamp(W/650,.62,1);const mid=W*.49;
+ for(const boat of lanes){const rel=boat.p-progress;let x=mid+rel*W*1.65; x=clamp(x,-85,W+85);const y=H*(.405+boat.lane*.084);drawBoat(x,y,scale,boat.color,boat.phase,boat.own);
+ if(!boat.own){ctx.save();ctx.globalAlpha=.76;ctx.fillStyle='#e4eff0';ctx.font='800 8px system-ui';ctx.textAlign='center';ctx.fillText(['NED','ITA','USA','GER'][boat.lane],x,y-25*scale);ctx.restore()}}
+ // finish gate glides closer as distance falls
+ const dist=1-progress;const gateX=mid+dist*W*1.55; if(gateX<W+30){ctx.save();ctx.globalAlpha=clamp(1-dist*1.2,.25,1);const y1=H*.37,y2=H*.77;ctx.strokeStyle='#f2e7c4';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(gateX,y1);ctx.lineTo(gateX,y2);ctx.moveTo(gateX+18,y1);ctx.lineTo(gateX+18,y2);ctx.stroke();for(let n=0;n<6;n++){ctx.fillStyle=n%2?'#173248':'#f4df9b';ctx.fillRect(gateX+n*3,y1-1,3,8)}ctx.fillStyle='#fff0b0';ctx.font='800 7px system-ui';ctx.textAlign='center';ctx.fillText('FINISH',gateX+9,y1-5);ctx.restore()}
+ // floating lane flag markers
+ const markerX=W*.06;ctx.save();ctx.globalAlpha=.65;for(let i=0;i<5;i++){const y=H*(.405+i*.084);ctx.fillStyle='#f4dd9e';ctx.fillRect(markerX,y-13,1,13);ctx.fillStyle=i===2?'#ffdc7f':'#e7e8d4';ctx.beginPath();ctx.moveTo(markerX+1,y-12);ctx.lineTo(markerX+10,y-9);ctx.lineTo(markerX+1,y-6);ctx.fill()}ctx.restore();
+ if(strokeFlash>0){ctx.globalAlpha=strokeFlash*2;ctx.fillStyle='#ffe18a';ctx.beginPath();ctx.arc(mid,H*.57,18+(1-strokeFlash)*35,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1}
+ if(shake>0){/* slight impact ripple for a repeated-side mistake */ctx.globalAlpha=shake;ctx.strokeStyle='#ff8978';ctx.lineWidth=2;ctx.beginPath();ctx.ellipse(mid,H*.57,30+(1-shake)*30,7+(1-shake)*9,0,0,Math.PI*2);ctx.stroke();ctx.globalAlpha=1}
+}
+resize();
+})();
+</script>
+</body>
+</html>
