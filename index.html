@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#071012" />
+  <title>BLUE LOCK: EGOIST PROJECT</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800;900&family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main id="app">
+    <canvas id="game-canvas" aria-label="3D football stadium"></canvas>
+    <div class="scanlines"></div>
+    <div class="vignette"></div>
+
+    <section id="home-screen" class="screen">
+      <header class="topbar">
+        <a class="brand" href="#" aria-label="Egoist Project home"><span class="brand-mark">E</span><span>BLUE LOCK <b>PROJECT</b></span></a>
+        <div class="season-chip"><i></i> EGOIST LEAGUE <span>SEASON 01</span></div>
+        <button class="icon-button" id="settings-open" aria-label="Settings">☷</button>
+      </header>
+
+      <div class="hero-copy">
+        <div class="eyebrow"><span class="eyebrow-line"></span> THE STRIKER'S JOURNEY BEGINS</div>
+        <h1>BLUE LOCK<span class="title-outline">EGOIST</span><span class="title-project">PROJECT <sup>01</sup></span></h1>
+        <p class="hero-description">There is no formula for becoming the best.<br><strong>Only your ego can write the final chapter.</strong></p>
+        <button class="primary-cta" id="career-start"><span>ENTER THE PROJECT</span><b>↗</b></button>
+        <div class="hero-footnote"><span class="live-dot"></span> TRAINING FACILITY // OPEN</div>
+      </div>
+
+      <aside class="career-card glass-card">
+        <div class="card-head"><span>YOUR EGO</span><span class="rank-badge" id="home-rank">E</span></div>
+        <div class="player-name" id="home-name">NEW EGOIST</div>
+        <div class="rating-row"><span>STRIKER RATING</span><strong id="home-rating">032</strong></div>
+        <div class="rating-meter"><i id="home-meter"></i></div>
+        <div class="card-stats"><div><b id="home-level">LV. 01</b><span>LEVEL</span></div><div><b id="home-xp">000</b><span>PROJECT XP</span></div><div><b id="home-goals">00</b><span>GOALS</span></div></div>
+        <button id="profile-edit" class="text-action">EDIT PLAYER <span>↗</span></button>
+      </aside>
+
+      <nav class="mode-dock" aria-label="Game modes">
+        <button class="mode-item active" data-mode="career"><span class="mode-icon">◈</span><span><b>CAREER</b><small>EGOIST PROJECT</small></span><i>01</i></button>
+        <button class="mode-item" data-mode="play"><span class="mode-icon">◉</span><span><b>PLAY</b><small>QUICK MATCH</small></span><i>02</i></button>
+        <button class="mode-item" data-mode="training"><span class="mode-icon">⌁</span><span><b>TRAINING</b><small>BUILD YOUR WEAPON</small></span><i>03</i></button>
+        <button class="mode-item" data-mode="roster"><span class="mode-icon">▦</span><span><b>ROSTER</b><small>11 EGOISTS</small></span><i>04</i></button>
+        <button class="mode-item" data-mode="weapons"><span class="mode-icon">✳</span><span><b>WEAPONS</b><small>SKILL LOADOUT</small></span><i>05</i></button>
+      </nav>
+
+      <div class="hero-meta"><span>FACILITY 05 <b>·</b> STRIKER TEST</span><span>BUILD 1.0.4 <b>·</b> <span id="menu-time">00:00</span></span></div>
+    </section>
+
+    <section id="game-screen" class="screen hidden">
+      <header class="match-top">
+        <button class="back-button" id="pause-button">Ⅱ</button>
+        <div class="match-score"><span class="team-name">BLUE LOCK</span><strong id="score-blue">0</strong><span class="score-divider">:</span><strong id="score-red">0</strong><span class="team-name opponent">WILD CARD</span></div>
+        <div class="match-clock"><span class="live-dot"></span><b id="match-clock">00:00</b><small>GROUP STAGE</small></div>
+      </header>
+      <div class="game-label"><span class="live-dot"></span><span id="game-mode-label">CAREER MATCH</span><span class="label-separator">/</span><span>STRIKER TEST 01</span></div>
+      <div class="player-tag"><span class="player-tag-icon">E</span><div><b id="field-player-name">EGOIST</b><small id="field-player-weapon">DIRECT SHOT</small></div><strong id="field-player-rank">E</strong></div>
+      <div class="field-bottom">
+        <div class="flow-panel glass-card"><div class="flow-top"><span>FLOW STATE</span><b id="flow-readout">0%</b></div><div class="flow-meter"><i id="flow-meter-fill"></i></div><div class="flow-hint" id="flow-hint">MAKE YOUR MOVE</div></div>
+        <div class="stamina-panel"><div class="stamina-label"><span>STAMINA</span><b id="stamina-readout">100</b></div><div class="stamina-meter"><i id="stamina-fill"></i></div></div>
+      </div>
+      <div class="action-toast" id="action-toast"></div>
+
+      <div class="touch-controls" id="touch-controls">
+        <div class="left-controls"><div class="joystick" id="joystick"><div class="joy-ring"></div><div class="joy-knob" id="joy-knob"></div></div><button class="touch-button sprint-touch" data-action="sprint"><span>⇧</span><small>SPRINT</small></button></div>
+        <div class="right-controls">
+          <button class="touch-button action-button" data-action="shoot"><span>◉</span><small>SHOOT</small></button>
+          <button class="touch-button" data-action="pass"><span>➤</span><small>PASS</small></button>
+          <button class="touch-button" data-action="dribble"><span>↝</span><small>DRIBBLE</small></button>
+          <button class="touch-button flow-touch" data-action="flow"><span>✳</span><small>FLOW</small></button>
+          <button class="touch-button" data-action="switch"><span>◎</span><small>AIM</small></button>
+        </div>
+      </div>
+      <div class="keyboard-hint">WASD MOVE <span>·</span> SHIFT SPRINT <span>·</span> SPACE SHOOT <span>·</span> E PASS <span>·</span> Q DRIBBLE <span>·</span> F FLOW</div>
+    </section>
+
+    <div id="modal-root"></div>
+    <div class="orientation-note"><span>↻</span><b>ROTATE YOUR DEVICE</b><small>THE PROJECT IS BUILT FOR LANDSCAPE</small></div>
+  </main>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
