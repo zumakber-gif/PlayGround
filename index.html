@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#101211">
+  <title>Cripta de Cinzas — uma descida roguelike</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="Cripta de Cinzas"><span class="brand-mark">✳</span><span>CRIPTA <i>DE</i> CINZAS</span></a>
+      <div class="run-status"><span class="live-dot"></span><span id="top-status">A DESCIDA COMEÇA</span></div>
+      <div class="top-actions"><span class="seed-label">SEMENTE <b id="seed-label">—</b></span><button class="icon-button" id="sound-btn" title="Som ligado/desligado">♫</button><button class="icon-button" id="help-btn" title="Controles">?</button></div>
+    </header>
+    <main id="app" class="main-content"></main>
+    <footer class="site-footer"><span>UMA AVENTURA DE CADA VEZ</span><span>WASD / SETAS PARA MOVER <b>·</b> ESPAÇO PARA ESPERAR <b>·</b> I PARA POÇÃO</span><span id="footer-run">RUN 000</span></footer>
+  </div>
+  <div id="modal-root"></div>
+  <script src="game.js"></script>
+</body>
+</html>
